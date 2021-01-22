@@ -26,7 +26,7 @@
 								<!-- Nav -->
 									<nav id="nav">
 										<a href="index.html">Homepage</a>
-										<a href="threecolumn.html">Three Column</a>
+										<a href="PredictionApp.html">Prediction App</a>
 										<a href="twocolumn1.html">Two Column #1</a>
 										<a href="twocolumn2.html">Two Column #2</a>
 										<a href="onecolumn.html">One Column</a>
@@ -78,36 +78,69 @@
 								<!-- Main Content -->
 									<section>
 										<header>
-											<h2>Three Column</h2>
-											<h3>A generic three column layout</h3>
+											<h2>Prediction App</h2>
 										</header>
-										<p>
-											Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam metus, congue
-											vel suscipit ut, dignissim non risus. Vestibulum ante est, fringilla nec placerat
-											eu, vestibulum vitae diam. Integer eget egestas eros. Duis enim erat, mollis quis
-											lacinia eget, blandit nec ipsum. Donec vitae turpis ipsum. Aliquam mauris libero,
-											sagittis in eleifend at, mattis imperdiet velit. Donec urna risus, rutrum molestie
-											varius ac, lacinia sit amet augue. Nam ultrices elementum eros.
-										</p>
-										<p>
-											Sed faucibus viverra ligula, non varius magna semper vitae. Donec eu justo ut ipsum
-											hendrerit congue nec eu risus. Cum sociis natoque penatibus et magnis dis parturient
-											montes, nascetur ridiculus mus. Lorem ipsum dolor sit amet, consectetur adipiscing
-											egestas tempus. Cras convallis odio sit amet risus convallis porttitor. Integer
-											vehicula fermentum ligula at pretium. Suspendisse semper iaculis eros, eu aliquam
-											justo imperdiet vel. Proin nec dictum mi. Duis commodo enim non tellus interdum
-											elit. Suspendisse fermentum adipiscing nisi, a tempor libero malesuada at. Morbi
-											lacinia dui adipiscing risus eleifend tincidunt. Proin eu mauris eu tellus eleifend
-											hendrerit.
-										</p>
-										<p>
-											Mauris sit amet tellus urna. In facilisis, tortor vitae ultricies egestas, odio
-											mi rhoncus arcu, quis euismod felis felis et velit. Mauris varius consectetur erat
-											egestas tempus. Cras convallis odio sit amet risus convallis porttitor. Integer
-											vehicula fermentum ligula at pretium. Suspendisse semper iaculis eros, eu aliquam
-											justo imperdiet vel. Proin nec dictum mi. Duis commodo enim non tellus interdum
-											iaculis. Phasellus ultrices diam sit amet orci lacinia sed consequat dui auctor.
-										</p>
+										<form id="myForm">
+
+										  Test app
+										  <br>
+										  Enter stock name<input type="text" id="stock" name="stock">   
+										  Enter number of shares own of this stock<input type="number" id="price" name="price">
+										  <input type="submit" value="Submit">
+										</form>
+
+										<p id="sats"></p>
+
+										<script>
+										window.addEventListener("load",function() { // on page load
+										  document.getElementById("myForm").addEventListener("submit",function(e) { // on submit
+										    e.preventDefault(); // stop submission
+										    // get values - the + converts a string containing a number to a number
+										    if (document.getElementById("stock").value == 'WWW'){
+											var x = 12;
+										    }	else{
+											var x = 0;
+										    }
+
+										    var y = +document.getElementById("price").value || 0; // if nothing entered make it 0
+										    if (isNaN(x)) x = 0;
+										    if (isNaN(y)) y = 0;
+										    document.getElementById("sats").innerHTML = (y !=0)   ? x-y : "Cannot divide by 0";
+										  })    
+										})
+										</script>
+										<p id="change" </p>
+										<script>
+										$(document).ready(function() {
+										    $.ajax({
+											type: "GET",
+											url: "http://stockaiprediction.flywheelsites.com/wp-content/uploads/2021/01/testcsv.csv",
+											dataType: "text",
+											success: function(data) {processData(data);}
+										     });
+										});
+
+										function processData(allText) {
+										    var allTextLines = allText.split(/\r\n|\n/);
+										    var headers = allTextLines[0].split(',');
+										    var lines = [];
+
+										    for (var i=1; i<allTextLines.length; i++) {
+											var data = allTextLines[i].split(',');
+											if (data.length == headers.length) {
+
+											    var tarr = [];
+											    for (var j=0; j<headers.length; j++) {
+												tarr.push(headers[j]+":"+data[j]);
+											    }
+											    lines.push(tarr);
+											}
+										    }
+										    // alert(lines);
+										    document.getElementById("change").innerHTML = data;
+										}
+										</script>
+
 									</section>
 
 							</div>
