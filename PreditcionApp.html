@@ -90,56 +90,21 @@
 										</form>
 
 										<p id="sats"></p>
-
-										<script>
-										window.addEventListener("load",function() { // on page load
-										  document.getElementById("myForm").addEventListener("submit",function(e) { // on submit
-										    e.preventDefault(); // stop submission
-										    // get values - the + converts a string containing a number to a number
-										    if (document.getElementById("stock").value == 'WWW'){
-											var x = 12;
-										    }	else{
-											var x = 0;
+										<?php
+										$start_row = 1; //define start row
+										$i = 1; //define row count flag
+										$file = fopen("testcsv.csv", "r");
+										while (($row = fgetcsv($file)) !== FALSE) {
+										    if($i >= $start_row) {
+											print_r($row);
+											//do your stuff
 										    }
-
-										    var y = +document.getElementById("price").value || 0; // if nothing entered make it 0
-										    if (isNaN(x)) x = 0;
-										    if (isNaN(y)) y = 0;
-										    document.getElementById("sats").innerHTML = (y !=0)   ? x-y : "Cannot divide by 0";
-										  })    
-										})
-										</script>
-										<p id="change" </p>
-										<script>
-										$(document).ready(function() {
-										    $.ajax({
-											type: "GET",
-											url: "testcsv.csv",
-											dataType: "text",
-											success: function(data) {processData(data);}
-										     });
-										});
-
-										function processData(allText) {
-										    var allTextLines = allText.split(/\r\n|\n/);
-										    var headers = allTextLines[0].split(',');
-										    var lines = [];
-
-										    for (var i=1; i<allTextLines.length; i++) {
-											var data = allTextLines[i].split(',');
-											if (data.length == headers.length) {
-
-											    var tarr = [];
-											    for (var j=0; j<headers.length; j++) {
-												tarr.push(headers[j]+":"+data[j]);
-											    }
-											    lines.push(tarr);
-											}
-										    }
-										    // alert(lines);
-										    document.getElementById("change").innerHTML = data;
+										    $i++;
 										}
-										</script>
+
+										// close file
+										fclose($file);
+										?>
 
 									</section>
 
